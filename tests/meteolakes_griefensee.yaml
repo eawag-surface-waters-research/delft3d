@@ -1,0 +1,7 @@
+start_date: "20220101"
+end_date: "20220107"
+setup: "delft3d_5.01.00.2163"
+log_name: "meteolakes_greifensee"
+log_path: "/home/jamesrunnalls/git/alplakes/eawag-delft3d/logs"
+model: "greifensee_1.0.0"
+simulation_folder: "/home/jamesrunnalls/git/alplakes/eawag-delft3d/tests/output/meteolakes_greifensee"
