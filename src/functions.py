@@ -14,7 +14,10 @@ def parse_parameters(file):
                 {"name": "model", "default": False, "type": valid_string},
                 {"name": "log_name", "default": "log", "type": valid_string},
                 {"name": "log_path", "default": "", "type": valid_path},
-                {"name": "log_path", "default": "", "type": valid_path}]
+                {"name": "setup", "default": False, "type": valid_string},
+                {"name": "simulation_folder", "default": False, "type": valid_path},
+                {"name": "env_data", "default": "local", "type": valid_string},
+                ]
     try:
         with open(file, "r") as f:
             parameters = yaml.load(f, Loader=yaml.FullLoader)

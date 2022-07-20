@@ -9,7 +9,7 @@ def main(file):
     parameters = parse_parameters(file)
     if parameters["setup"] in setups:
         run = setups[parameters["setup"]](parameters)
-        run.create_input_files()
+        run.process()
     else:
         print("Currently only the following setups are supported: {}".format(list(setups.keys())))
 
