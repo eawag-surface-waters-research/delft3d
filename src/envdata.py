@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
-from functions import log
+import shutil
+from functions import log, collect_restart_file_local_storage
 from distutils.dir_util import copy_tree
 
 class Delft3D_501002163 (object):
@@ -19,6 +20,7 @@ class Delft3D_501002163 (object):
             ]
         self.log = log(parameters["log_name"], parameters["log_path"])
         self.log.initialise("Initialising hydrodynamic simulation {} using {}".format(parameters["model"], parameters["setup"].replace("_", " ")))
+        self.log.initialise("Simulating from {} to {}".format(parameters["start_date"], parameters["end_date"]))
 
     def process(self):
         self.copy_static_data()
@@ -32,9 +34,14 @@ class Delft3D_501002163 (object):
 
     def collect_restart_file(self):
         self.log.log("Collecting restart file.")
+        file, start_date = collect_restart_file_local_storage(self.parameters["restart_files"], self.parameters["start_date"])
+        self.parameters["start_date"] = start_date
+        self.log.log("Start date adjusted to {} to match restart file.".format(start_date), indent=1)
+        shutil.copyfile(file, os.path.join(self.parameters["simulation_folder"], "tri-rst.Simulation_Web_rst.000000"))
+        self.log.log("Collected restart file.", indent=1)
 
     def adjust_static_files(self):
-        self.log.log("Adjusting static files.")
+        self.log.log("Adjusting static files .")
 
     def weather_data_files(self):
         self.log.log("Creating weather data files.")

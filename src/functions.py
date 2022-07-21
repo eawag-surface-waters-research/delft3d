@@ -16,7 +16,8 @@ def parse_parameters(file):
                 {"name": "log_path", "default": "", "type": valid_path},
                 {"name": "setup", "default": False, "type": valid_string},
                 {"name": "simulation_folder", "default": False, "type": valid_path},
-                {"name": "env_data", "default": "local", "type": valid_string},
+                {"name": "weather_data", "default": False, "type": valid_path},
+                {"name": "restart_files", "default": False, "type": valid_path},
                 ]
     try:
         with open(file, "r") as f:
@@ -28,8 +29,6 @@ def parse_parameters(file):
     for i in range(len(required)):
         key = required[i]["name"]
         parameters[key] = required[i]["type"](key, parameters, required[i]["default"])
-
-    print(parameters)
 
     return parameters
 
@@ -88,7 +87,6 @@ class log(object):
     def initialise(self, string):
         out = "****** " + string + " ******"
         print('\033[92m' + out + '\033[0m')
-        print("Logging to: {}".format(self.path))
         with open(self.path, "a") as file:
             file.write(out + "\n")
 
@@ -103,3 +101,13 @@ class log(object):
         print('\033[91m' + out + '\033[0m')
         with open(self.path, "a") as file:
             file.write(out + "\n")
+
+
+def collect_restart_file_local_storage(folder, date):
+    files = os.listdir(folder)
+    files.sort()
+    dates = [date.timestamp() - datetime.strptime(x.split(".")[-2], '%Y%m%d').timestamp() for x in files]
+    dates = [x for x in dates if x > 0]
+    file = files[dates.index(min(dates))]
+    date = datetime.strptime(file.split(".")[-2], '%Y%m%d')
+    return os.path.join(folder, file), date
