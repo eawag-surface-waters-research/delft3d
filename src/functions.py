@@ -103,11 +103,4 @@ class log(object):
             file.write(out + "\n")
 
 
-def collect_restart_file_local_storage(folder, date):
-    files = os.listdir(folder)
-    files.sort()
-    dates = [date.timestamp() - datetime.strptime(x.split(".")[-2], '%Y%m%d').timestamp() for x in files]
-    dates = [x for x in dates if x > 0]
-    file = files[dates.index(min(dates))]
-    date = datetime.strptime(file.split(".")[-2], '%Y%m%d')
-    return os.path.join(folder, file), date
+
